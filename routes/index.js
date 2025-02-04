@@ -18,7 +18,7 @@ router.post("/login", login.postLogin)//로그인 post 요청
 router.post("/logout", logout.postLogout)
 router.get("/state", state.getState);
 router.get("/user", user.getUserList);
-router.post('/signup',signUp.getSignUp);
 router.post('/signup',signUp.postSignUp);
+// router.post('/signup',signUp.getSignUp);
 
 module.exports = router;

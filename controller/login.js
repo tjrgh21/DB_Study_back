@@ -2,10 +2,6 @@ const pool = require("../DB/db")
 
 exports.postLogin = async(req, res) => {
 
-};
-
-exports.postLogin = async(req, res) => {
-
     try{
         const {id, pw} = req.body.user;
         const [ checkUser ] = await pool.query("SELECT * FROM user WHERE id =? AND pw = ?",[id, pw]);

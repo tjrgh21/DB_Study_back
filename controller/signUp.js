@@ -12,7 +12,7 @@ exports.getSignUp = async(req, res) => {
 
 exports.postSignUp = async(req, res) => {
     try{
-        const {id, pw, name} =req.body;
+        const {id, pw, name} =req.body.user;
         console.log(id, pw, name)
         const [ insertInfo ] = await pool.query("INSERT INTO user VALUES(?,?,?)",[id, pw, name])
         res.send({msg: "회원가입 완료" })
