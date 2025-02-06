@@ -9,6 +9,7 @@ const main = require('../controller/main')
 const state = require("../controller/state")
 const user = require('../controller/user')
 const signUp = require('../controller/signUp')
+const cart = require('../controller/cart')
 
 
 
@@ -19,6 +20,6 @@ router.post("/logout", logout.postLogout)
 router.get("/state", state.getState);
 router.get("/user", user.getUserList);
 router.post('/signup',signUp.postSignUp);
-// router.post('/signup',signUp.getSignUp);
+router.post('/cart',cart.postCart);
 
 module.exports = router;
