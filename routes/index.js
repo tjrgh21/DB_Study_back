@@ -10,6 +10,7 @@ const state = require("../controller/state")
 const user = require('../controller/user')
 const signUp = require('../controller/signUp')
 const cart = require('../controller/cart')
+const cartBook = require('../controller/cartBook')
 
 
 
@@ -21,5 +22,6 @@ router.get("/state", state.getState);
 router.get("/user", user.getUserList);
 router.post('/signup',signUp.postSignUp);
 router.post('/cart',cart.postCart);
+router.post('/cartBook',cartBook.postCartBook);
 
 module.exports = router;

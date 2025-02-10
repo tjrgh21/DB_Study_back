@@ -4,8 +4,8 @@ var options = {
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: '0143',
-    database: 'book_system',
+    password: '2833',
+    database: 'db_study',
 };
 
 var sessionStore = new MYSQLStore(options);
