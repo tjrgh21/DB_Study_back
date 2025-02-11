@@ -25,4 +25,6 @@ router.post('/cart',cart.postCart);
 router.get('/cartBook',cartBook.getCart);
 router.post('/cartBook',cartBook.postCartBook);
 
+router.post('/deleteCartBook', cartBook.deleteCartBook);
+
 module.exports = router;

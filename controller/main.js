@@ -1,6 +1,8 @@
 const pool = require("../DB/db")
 
 
+
 exports.getMain = async (req, res) => {
-    res.send('main page')
+    const user = req.session.user
+    res.send({user: user})
 };
