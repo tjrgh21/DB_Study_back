@@ -4,7 +4,7 @@ const pool = require("../DB/db")
 exports.getMyPage = async (req, res) => {
     try {
         const user = req.session.user //세션에서 유저 가져오기
-        // console.log("세션 정보:", req.session)
+        console.log("세션 정보:", req.session)
         console.log("유저 정보:", user)
 
         // const userInfo = await pool.query("SELECT * FROM user WHERE id = ?", [user])
