@@ -10,7 +10,7 @@ exports.postLogin = async(req, res) => {
             req.session.user = id
             req.session.save()
             console.log(req.session.user)
-            res.send({msg: "로그인 완료"})
+            res.send({msg: "로그인 되었습니다."})
         }
         else{
             res.send({msg: "존재하지 않는 사용자입니다."})

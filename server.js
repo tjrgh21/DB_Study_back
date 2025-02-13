@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
     origin: ["http://localhost:3000"],
-    method: ["POST", "GET"],
+    method: ["POST", "GET", "DELETE"],
     credentials:true,
 })); //통신을 할때 어떤 메소트와 주소로 할건지 선언
 
