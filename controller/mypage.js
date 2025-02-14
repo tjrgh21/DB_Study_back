@@ -4,7 +4,7 @@ const pool = require("../DB/db")
 exports.getMyPage = async (req, res) => {
     try {
         const user = req.session.user //세션에서 유저 가져오기
-        console.log("세션 정보:", req.session) //잠시 대기
+        // console.log("세션 정보:", req.session)
         console.log("유저 정보:", user)
 
         // const userInfo = await pool.query("SELECT * FROM user WHERE id = ?", [user])
@@ -66,3 +66,9 @@ exports.deleteAddress = async (req, res) => {
     res.send({ msg: "주소 목록에서 삭제" });
     console.log("주소 삭제: ", address_id, "번 째 주소")
 }
+
+// //주문내역
+// exports.orderBookList = async (req, res) => {
+//     const user = req.session.user
+//     await pool.query("DELETE FROM address WHERE address_id = ? AND user_id =?", [address_id, user]);
+// }

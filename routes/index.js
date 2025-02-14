@@ -40,6 +40,7 @@ router.post('/deleteCard', mypage.deleteCard); //카드 삭제
 router.post('/address', mypage.postAddress); //주소 추가
 router.post('/deleteAddress', mypage.deleteAddress); //주소 삭제
 
+router.post('/updateCartQuantity', cartBook.updateCartQuantity); //장바구니에서 수량 업데이트
 //여기까지 --------------------------------------------------------------
 
 
