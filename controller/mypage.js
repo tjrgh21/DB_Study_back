@@ -3,11 +3,16 @@ const pool = require("../DB/db")
 //카드, 주소 조회
 exports.getMyPage = async (req, res) => {
     try {
-        const user = req.session.user //세션에서 유저 가져오기
-        // console.log("세션 정보:", req.session)
+        const user = req.session.user; //세션에서 유저 가져오기
+        // const user = "admin"; //임시
+        console.log("세션 정보:", req.session)
         console.log("유저 정보:", user)
+        // if (!user) {
+        //     res.send({msg: "로그인 안됨"})
+        // }
 
-        // const userInfo = await pool.query("SELECT * FROM user WHERE id = ?", [user])
+        const userInfo = await pool.query("SELECT * FROM user WHERE id = ?", [user])
+        console.log("유저 정보 쿼리: ",userInfo)
         const card = await pool.query("SELECT * FROM credit WHERE user_id = ?", [user])
         const address = await pool.query("SELECT * FROM address WHERE user_id = ?", [user])
         console.log("카드 쿼리: ", card, "주소 쿼리: ", address)
