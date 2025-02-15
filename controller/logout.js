@@ -7,7 +7,7 @@ exports.postLogout = async (req, res) => {
         req.session.destroy(() => {
             req.session
         })
-        res.send({msg: "로그아웃 완료"})
+        res.send({msg: "로그아웃 되었습니다."})
     }
     else {
         res.send({msg: "로그인 상태 아님"})
