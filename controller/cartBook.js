@@ -14,7 +14,7 @@ exports.postCartBook = async (req, res) => {
     try {
         const user = req.session.user
         // const quantity = req.body.quantity
-        const {oneUpdate, increase, quantity} = req.body
+        const {quantity} = req.body
         console.log("body 구성:", req.body)
         const book_id = req.body.book_id
         const cartId = await pool.query("SELECT cart_id FROM cart WHERE user_id = ?", [user])
@@ -27,8 +27,7 @@ exports.postCartBook = async (req, res) => {
         const sameBook = await pool.query("SELECT cart_book_list_id FROM cart_booklist WHERE cart_cart_id = ? AND book_book_id = ?", [cartId[0][0].cart_id, book_id])
 
         if (sameBook[0].length > 0) {
-            const updateQuantity = oneUpdate ? (increase ? 1 : -1) : quantity
-            const updateBook = await pool.query("UPDATE cart_booklist SET order_quantity = order_quantity + ? WHERE cart_cart_id = ? AND book_book_id = ?", [updateQuantity, cartId[0][0].cart_id, book_id ])
+            const updateBook = await pool.query("UPDATE cart_booklist SET order_quantity = order_quantity + ? WHERE cart_cart_id = ? AND book_book_id = ?", [quantity, cartId[0][0].cart_id, book_id ])
             res.send({msg: "기존 도서에 추가"})
         } else {
             const insertBook = await pool.query("INSERT INTO cart_booklist(order_quantity, cart_cart_id, book_book_id) VALUES(?,?,?)", [quantity, cartId[0][0].cart_id, book_id])
@@ -40,6 +39,33 @@ exports.postCartBook = async (req, res) => {
     catch (err) {
         console.error(err)
     }
+}
+
+exports.postQuantity = async (req, res) => {
+    const user = req.session.user
+    const {state, book, stock} = req.body
+    const cartId = await pool.query("SELECT cart_id FROM cart WHERE user_id = ?", [user])
+    const checkStock = await pool.query("SELECT order_quantity FROM cart_booklist WHERE book_book_id =? AND cart_cart_id=?",[book, cartId[0][0].cart_id])
+    console.log(checkStock[0][0].order_quantity)
+
+    if(state === "plus"){
+        if(stock<=checkStock[0][0].order_quantity){
+            res.send({msg:"재고량 초과"})
+        }
+        else{
+            const plusQuantity = await pool.query("UPDATE cart_booklist SET order_quantity + 1 WHERE book_book_id =? AND cart_cart_id=?",[book, cartId[0][0].cart_id])
+        }
+    }
+    else{
+        const checkQuantity = await pool.query("SELECT order_quantity FROM cart_booklist WHERE book_book_id =? AND cart_cart_id=?",[book, cartId[0][0].cart_id])
+        if(checkQuantity[0][0].quantity === 1){
+            const delQuan = await pool.query("DELETE FROM cart_booklist WHERE order_quantity = 1 AND book_book_id =?",[book])
+        }
+        else{
+        const minusQuantity = await pool.query(`
+            UPDATE cart_booklist SET order_quantity = order_quantity - 1 WHERE book_book_id =? AND cart_cart_id=?`,[book, cartId[0][0].cart_id])
+        }
+}
 }
 
 //책 삭제
