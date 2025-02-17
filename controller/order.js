@@ -3,8 +3,8 @@ const pool = require("../DB/db")
 //주문
 exports.postOrder = async (req, res) => {
     try {
-        // const user = req.session.user;
-        const user = "admin" //임시
+        const user = req.session.user;
+        // const user = "admin" //임시
         console.log(user)
         const {
             order_id,
