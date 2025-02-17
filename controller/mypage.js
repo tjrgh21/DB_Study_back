@@ -70,9 +70,3 @@ exports.deleteAddress = async (req, res) => {
     res.send({ msg: "주소 목록에서 삭제" });
     console.log("주소 삭제: ", address_id.address_id, "번 째 주소")
 }
-
-// //주문내역
-// exports.orderBookList = async (req, res) => {
-//     const user = req.session.user
-//     await pool.query("DELETE FROM address WHERE address_id = ? AND user_id =?", [address_id, user]);
-// }

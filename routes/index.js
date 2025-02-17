@@ -16,6 +16,7 @@ const cartBook = require('../controller/cartBook')
 
 const mypage = require('../controller/mypage')
 const order = require('../controller/order')
+const orderList = require('../controller/orderList')
 
 //여기까지 --------------------------------------------------------------
 
@@ -43,6 +44,8 @@ router.post('/deleteAddress', mypage.deleteAddress); //주소 삭제
 
 router.post('/updateCartQuantity', cartBook.updateCartQuantity); //장바구니에서 수량 업데이트
 router.post('/order', order.postOrder) //주문하기
+router.get('/orderBookList', orderList.getOrderList) //주문내역
+
 //여기까지 --------------------------------------------------------------
 
 

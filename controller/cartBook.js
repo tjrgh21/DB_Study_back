@@ -51,8 +51,8 @@ exports.updateCartQuantity = async (req, res) => {
     try {
         const user = req.session.user;
         console.log("현재 로그인 사용자: ", user)
-        const { book_id, quantity, increase } = req.body;
-        console.log("책 id: ", book_id, "책 수량: ", quantity)
+        const { book_id, increase } = req.body;
+        console.log("수량 변경 책 id: ", book_id)
         const [cart] = await pool.query("SELECT cart_id FROM cart WHERE user_id = ?", [user]);
         const cartId = cart[0].cart_id; //장바구니 아이디
 
