@@ -9,8 +9,8 @@ exports.postLogin = async(req, res) => {
         if(checkUser.length > 0){
             req.session.user = id
             req.session.save()
-            console.log(req.session)
-            console.log(req.session.user)
+            // console.log(req.session)
+            console.log("로그인: ", req.session.user)
             res.send({msg: "로그인 되었습니다."})
         }
         else{
