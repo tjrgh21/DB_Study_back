@@ -2,7 +2,7 @@ const pool = require("../DB/db")
 
 exports.getCart = async (req, res) => {
     const user = req.session.user;
-    console.log("유저 정보:", user)
+    console.log("장바구니 유저 정보:", user)
     const cartId = await pool.query("SELECT cart_id FROM cart WHERE user_id = ?", [user])
     const userBooks = await pool.query(`
         SELECT cart_book_list_id, book_name, stock, price, book_book_id, cart_cart_id, order_quantity

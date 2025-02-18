@@ -43,8 +43,9 @@ router.post('/address', mypage.postAddress); //주소 추가
 router.post('/deleteAddress', mypage.deleteAddress); //주소 삭제
 
 router.post('/updateCartQuantity', cartBook.updateCartQuantity); //장바구니에서 수량 업데이트
-router.post('/order', order.postOrder) //주문하기
-router.get('/orderBookList', orderList.getOrderList) //주문내역
+router.post('/order', order.postOrder); //주문하기
+router.get('/orderBookList', orderList.getOrderList); //주문내역
+router.get('/orderDetail/:order_id', orderList.getOrderDetail);
 
 //여기까지 --------------------------------------------------------------
 
