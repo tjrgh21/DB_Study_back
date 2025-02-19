@@ -15,12 +15,13 @@ exports.postOrder = async (req, res) => {
             card_id,
             expiration_date,
             card_company,
-            orderItems
+            orderItems,
+            type
         } = req.body;
         console.log("받은 orderItems:", orderItems);
 
-        // order_id 생성 (timestamp 사용)
-        const order_id = Date.now().toString(); // timestamp를 order_id로 사용
+        // order_id 생성 (timestamp)
+        const order_id = Date.now().toString(); 
 
         // order_booklist 테이블에 insert (여러 권의 책 처리) 및 재고 업데이트
         for (const item of orderItems) {
@@ -55,6 +56,14 @@ exports.postOrder = async (req, res) => {
 
             // 책 재고 업데이트 (감소)
             await pool.query("UPDATE book SET stock = stock - ? WHERE book_id = ?", [order_quantity, book_book_id]);
+        }
+
+        //장바구니 비우기
+        const cartId = await pool.query("SELECT cart_id FROM cart WHERE user_id = ?",[user])
+        console.log(cartId)
+        if (type === "cart") {
+            await pool.query("DELETE FROM cart_booklist WHERE cart_cart_id = ?",[cartId[0][0].cart_id])
+            console.log("장바구니 비우기")
         }
 
         res.send({ msg: "주문 완료", order_id: order_id }); // 주문 완료 응답에 order_id 포함

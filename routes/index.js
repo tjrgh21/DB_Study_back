@@ -27,6 +27,7 @@ router.post("/logout", logout.postLogout)
 router.get("/state", state.getState);
 router.get("/user", user.getUserList);
 router.post('/signup',signUp.postSignUp);
+router.get('/signup',signUp.getSignUp);
 router.post('/cart',cart.postCart);
 router.get('/cartBook',cartBook.getCart);
 router.post('/cartBook',cartBook.postCartBook);

@@ -2,8 +2,9 @@ const pool = require("../DB/db")
 
 exports.getSignUp = async(req, res) => {
     try{
-        const [ user ] = await pool.query("SELECT * FROM user")
-        console.log(user)
+        const [ userList ] = await pool.query("SELECT * FROM user")
+        console.log("userList: ", userList)
+        res.send({userList : userList})
     }
     catch(err){
         console.error(err)
