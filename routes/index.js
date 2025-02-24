@@ -17,6 +17,7 @@ const cartBook = require('../controller/cartBook')
 const mypage = require('../controller/mypage')
 const order = require('../controller/order')
 const orderList = require('../controller/orderList')
+const coupon = require('../controller/coupon')
 
 //여기까지 --------------------------------------------------------------
 
@@ -47,6 +48,7 @@ router.post('/updateCartQuantity', cartBook.updateCartQuantity); //장바구니�
 router.post('/order', order.postOrder); //주문하기
 router.get('/orderBookList', orderList.getOrderList); //주문내역
 router.get('/orderDetail/:order_id', orderList.getOrderDetail);
+router.get('/coupon', coupon.getCoupon); //쿠폰 조회
 
 //여기까지 --------------------------------------------------------------
 
