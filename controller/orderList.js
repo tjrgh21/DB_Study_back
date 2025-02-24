@@ -54,11 +54,18 @@ exports.getOrderDetail = async (req, res) => {
 
     // 해당 주문 ID에 해당하는 책 목록과 책 이름 가져오기
     //할인율 가져와야됨
-    const [orderBookList] = await pool.query(`
-        SELECT a.order_booklist_id, a.order_quantity, a.order_price, b.book_name
+    const [orderBookList] = await pool.query(`SELECT a.order_booklist_id, a.order_quantity, a.order_price, b.book_name, c.coupon_id, c.discount, c.discount_rate 
         FROM order_booklist a
         JOIN book b ON a.book_book_id = b.book_id
+        JOIN \`order\` o ON a.order_order_id = o.order_id
+        JOIN coupon c ON a.order_coupon_id = c.coupon_id
         WHERE a.order_order_id = ?`, [order_id]);
+    // const [orderBookList] = await pool.query(`
+    //     SELECT a.order_booklist_id, a.order_quantity, a.order_price, b.book_name
+    //     FROM order_booklist a
+    //     JOIN book b ON a.book_book_id = b.book_id
+    //     WHERE a.order_order_id = ?`, [order_id]);
+    console.log("잘되는지 모르겠음 일단 찍히긴 함 근데 빈 배열임: ", orderBookList)
 
     if (!orderBookList || orderBookList.length === 0) {
         return res.status(404).send("주문 책 목록을 찾을 수 없습니다.");
