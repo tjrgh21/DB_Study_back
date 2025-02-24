@@ -53,6 +53,7 @@ exports.getOrderDetail = async (req, res) => {
     }
 
     // 해당 주문 ID에 해당하는 책 목록과 책 이름 가져오기
+    //할인율 가져와야됨
     const [orderBookList] = await pool.query(`
         SELECT a.order_booklist_id, a.order_quantity, a.order_price, b.book_name
         FROM order_booklist a

@@ -15,9 +15,15 @@ exports.postOrder = async (req, res) => {
             card_id,
             expiration_date,
             card_company,
-            orderItems
+            orderItems,
+            type
         } = req.body;
         console.log("받은 orderItems:", orderItems);
+        // console.log("body 정보: ", req.body);
+
+        // //선택한 쿠폰
+        // const { selectedCouponId } = req.body;
+        // console.log("선택된 쿠폰 아이디", selectedCouponId)
 
         // order_id 생성 (timestamp 사용)
         const order_id = Date.now().toString(); // timestamp를 order_id로 사용
@@ -36,6 +42,8 @@ exports.postOrder = async (req, res) => {
                 return res.status(400).send({ msg: `도서 ${book_book_id}의 재고가 부족합니다. (현재 재고: ${stock})` });
             }
         }
+
+        
 
         // 모든 책의 재고가 충분하면 주문 처리 진행
         // order 테이블에 insert
@@ -57,7 +65,19 @@ exports.postOrder = async (req, res) => {
             await pool.query("UPDATE book SET stock = stock - ? WHERE book_id = ?", [order_quantity, book_book_id]);
         }
 
+        //장바구니 비우기
+        const cartId = await pool.query("SELECT cart_id FROM cart WHERE user_id = ?",[user])
+        if (type === "cart") {
+            await pool.query("DELETE FROM cart_booklist WHERE cart_cart_id = ?",[cartId])
+            console.log("장바구니 비우기")
+        }
+
         res.send({ msg: "주문 완료", order_id: order_id }); // 주문 완료 응답에 order_id 포함
+    } catch (err) {
+        console.error(err)
+    }
+}
+
 
         // //현재 재고량 - 주문 수량이 0보다 클 때만 실행
         // if (bookStock[0].stock - total_quantity > 0) {
@@ -95,10 +115,7 @@ exports.postOrder = async (req, res) => {
         //     console.log("재고량 부족")
         //     res.send({ msg: "재고량 부족" })
         // }
-    } catch (err) {
-        console.error(err)
-    }
-}
+
 
 /*
 postman용 임시 데이터
