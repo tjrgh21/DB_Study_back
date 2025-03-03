@@ -19,24 +19,30 @@ exports.postOrder = async (req, res) => {
             type
         } = req.body;
         console.log("받은 orderItems:", orderItems);
+        
+        // console.log("body 정보: ", req.body);
+
+        // //선택한 쿠폰
+        // const { selectedCouponId } = req.body;
+        // console.log("선택된 쿠폰 아이디", selectedCouponId)
 
         // order_id 생성 (timestamp)
         const order_id = Date.now().toString(); 
 
         // order_booklist 테이블에 insert (여러 권의 책 처리) 및 재고 업데이트
         for (const item of orderItems) {
-            const { book_book_id, order_quantity, order_price } = item;
-            console.log("책 정보: ", item)
+            const { book_book_id, order_quantity } = item;
 
             // 현재 재고량
             const [bookStock] = await pool.query("SELECT stock FROM book WHERE book_id = ?", [book_book_id]);
             const stock = bookStock[0].stock;
-            console.log("현재 재고량: ", stock)
 
             if (stock < order_quantity) {
                 return res.status(400).send({ msg: `도서 ${book_book_id}의 재고가 부족합니다. (현재 재고: ${stock})` });
             }
         }
+
+        
 
         // 모든 책의 재고가 충분하면 주문 처리 진행
         // order 테이블에 insert
@@ -46,12 +52,12 @@ exports.postOrder = async (req, res) => {
         );
 
         for (const item of orderItems) {
-            const { book_book_id, order_quantity, order_price } = item;
+            const { book_book_id, order_quantity, order_price, coupon_id } = item;
 
             // order_booklist 테이블에 insert
             await pool.query(
-                "INSERT INTO order_booklist (order_quantity, order_price, book_book_id, order_order_id) VALUES (?, ?, ?, ?)",
-                [order_quantity, order_price, book_book_id, order_id]
+                "INSERT INTO order_booklist (order_quantity, order_price, book_book_id, order_order_id, order_coupon_id) VALUES (?, ?, ?, ?, ?)",
+                [order_quantity, order_price, book_book_id, order_id, coupon_id]
             );
 
             // 책 재고 업데이트 (감소)
@@ -60,13 +66,18 @@ exports.postOrder = async (req, res) => {
 
         //장바구니 비우기
         const cartId = await pool.query("SELECT cart_id FROM cart WHERE user_id = ?",[user])
-        console.log(cartId)
+        console.log("받은 cartId:", cartId[0][0].cart_id);
         if (type === "cart") {
             await pool.query("DELETE FROM cart_booklist WHERE cart_cart_id = ?",[cartId[0][0].cart_id])
             console.log("장바구니 비우기")
         }
 
         res.send({ msg: "주문 완료", order_id: order_id }); // 주문 완료 응답에 order_id 포함
+    } catch (err) {
+        console.error(err)
+    }
+}
+
 
         // //현재 재고량 - 주문 수량이 0보다 클 때만 실행
         // if (bookStock[0].stock - total_quantity > 0) {
@@ -104,10 +115,7 @@ exports.postOrder = async (req, res) => {
         //     console.log("재고량 부족")
         //     res.send({ msg: "재고량 부족" })
         // }
-    } catch (err) {
-        console.error(err)
-    }
-}
+
 
 /*
 postman용 임시 데이터

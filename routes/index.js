@@ -50,6 +50,11 @@ router.get('/orderBookList', orderList.getOrderList); //주문내역
 router.get('/orderDetail/:order_id', orderList.getOrderDetail);
 router.get('/coupon', coupon.getCoupon); //쿠폰 조회
 
+router.get('/coupon', coupon.getCoupon); //쿠폰 조회
+router.post('/coupon', coupon.useCoupon) //쿠폰 사용
+// router.post('/coupon/select', coupon.selectCoupon) //쿠폰 선택
+// router.post('/coupon/deselect', coupon.deselectCoupon) //쿠폰 선택 취소
+
 //여기까지 --------------------------------------------------------------
 
 

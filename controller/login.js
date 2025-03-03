@@ -5,7 +5,7 @@ exports.postLogin = async(req, res) => {
     try{
         const {id, pw} = req.body.user;
         const [ checkUser ] = await pool.query("SELECT * FROM user WHERE id =? AND pw = ?",[id, pw]);
-        console.log(checkUser)
+        // console.log(checkUser)
         if(checkUser.length > 0){
             req.session.user = id
             req.session.save()
